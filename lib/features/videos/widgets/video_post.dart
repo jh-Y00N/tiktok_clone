@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
-import 'package:tiktok_clone/features/videos/views/widgets/video_button.dart';
-import 'package:tiktok_clone/features/videos/views/widgets/video_comments.dart';
-import 'package:tiktok_clone/generated/l10n.dart';
+import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
+import 'package:tiktok_clone/features/videos/widgets/video_comments.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -25,8 +24,6 @@ class _VideoPostState extends State<VideoPost>
     with SingleTickerProviderStateMixin {
   bool _isPaused = false;
   bool _isDescriptionExpanded = false;
-  // bool _autoMute = videoConfig.autoMute;
-  // bool _autoMute = videoConfig.value;
   final _animationDuration = Duration(milliseconds: 200);
   late final AnimationController _animationController;
   final description =
@@ -115,15 +112,6 @@ class _VideoPostState extends State<VideoPost>
     // _animationController.addListener(() {
     //   setState(() {});
     // });
-
-    // videoConfig.addListener(
-    //   () {
-    //     setState(() {
-    //       // _autoMute = videoConfig.autoMute;
-    //       _autoMute = videoConfig.value;
-    //     });
-    //   },
-    // );
   }
 
   @override
@@ -135,9 +123,6 @@ class _VideoPostState extends State<VideoPost>
 
   @override
   Widget build(BuildContext context) {
-    // final videoConfig =
-    //     context.dependOnInheritedWidgetOfExactType<VideoConfig>();
-    // print(videoConfig?.autoMute);
     return VisibilityDetector(
       onVisibilityChanged: _onVisibilityChanged,
       key: Key("${widget.index}"),
@@ -198,26 +183,6 @@ class _VideoPostState extends State<VideoPost>
               ),
             ),
           ),
-          // Positioned(
-          //   top: 40,
-          //   left: 20,
-          //   child: IconButton(
-          //     icon: FaIcon(
-          //       // VideoConfigData.of(context).autoMute
-          //       // _autoMute
-          //       context.watch<VideoConfig>().isMuted
-          //           ? FontAwesomeIcons.volumeOff
-          //           : FontAwesomeIcons.volumeHigh,
-          //       color: Colors.white,
-          //     ),
-          //     onPressed: () {
-          //       // VideoConfigData.of(context).toggleMute();
-          //       // videoConfig.toggleMute();
-          //       // videoConfig.value = !videoConfig.value;
-          //       context.read<VideoConfig>().toggleMute();
-          //     },
-          //   ),
-          // ),
           Positioned(
             bottom: 20,
             left: 20,
@@ -274,7 +239,7 @@ class _VideoPostState extends State<VideoPost>
                   onTap: () => _onCommentsTap(),
                   child: VideoButton(
                     icon: FontAwesomeIcons.solidHeart,
-                    text: S.of(context).likeCount(479895),
+                    text: "2.9M",
                   ),
                 ),
                 Gaps.v24,
@@ -282,7 +247,7 @@ class _VideoPostState extends State<VideoPost>
                   onTap: _onCommentsTap,
                   child: VideoButton(
                     icon: FontAwesomeIcons.solidComment,
-                    text: S.of(context).commentCount(225934),
+                    text: "33K",
                   ),
                 ),
                 Gaps.v24,

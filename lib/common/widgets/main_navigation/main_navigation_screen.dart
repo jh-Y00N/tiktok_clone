@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/common/widgets/main_navigation/main_config.dart';
 import 'package:tiktok_clone/common/widgets/main_navigation/widgets/nav_tab.dart';
 import 'package:tiktok_clone/common/widgets/main_navigation/widgets/post_video_button.dart';
@@ -9,43 +8,36 @@ import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/discover/discover_screen.dart';
 import 'package:tiktok_clone/features/inbox/inbox_screen.dart';
 import 'package:tiktok_clone/features/users/user_profile_screen.dart';
-import 'package:tiktok_clone/features/videos/views/video_recording_screen.dart';
-import 'package:tiktok_clone/features/videos/views/video_timeline_screen.dart';
+import 'package:tiktok_clone/features/videos/video_timeline_screen.dart';
 import 'package:tiktok_clone/utils.dart';
 
 class MainNavigationScreen extends StatefulWidget {
-  static const String routeName = "mainNavigarion";
-  const MainNavigationScreen({super.key, required this.tab});
-
-  final String tab;
+  const MainNavigationScreen({super.key});
 
   @override
   State<MainNavigationScreen> createState() => _MainNavigationScreenState();
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  final _tabs = ["home", "discover", "video", "inbox", "profile"];
-  late int _selectedIndex = _tabs.indexOf(widget.tab);
+  int _selectedIndex = 0;
 
   void _onTap(int index) {
-    context.go("/${_tabs[index]}");
     setState(() {
       _selectedIndex = index;
     });
   }
 
   void _onPostVideoButtonTap() {
-    context.pushNamed(VideoRecordingScreen.routeName);
-    // Navigator.of(context).push(
-    //   MaterialPageRoute(
-    //     builder: (context) => Scaffold(
-    //       appBar: AppBar(
-    //         title: Text('Record video'),
-    //       ),
-    //     ),
-    //     fullscreenDialog: true,
-    //   ),
-    // );
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => Scaffold(
+          appBar: AppBar(
+            title: Text('Record video'),
+          ),
+        ),
+        fullscreenDialog: true,
+      ),
+    );
   }
 
   @override
