@@ -1,5 +1,5 @@
 // DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
-// This is a library that provides messages for a en locale. All the
+// This is a library that provides messages for a ko locale. All the
 // messages from the main program should be duplicated here with the same
 // function name.
 
@@ -18,7 +18,7 @@ final messages = new MessageLookup();
 typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 
 class MessageLookup extends MessageLookupByLibrary {
-  String get localeName => 'en';
+  String get localeName => 'ko';
 
   static String m0(value) => "${value}";
 
@@ -27,15 +27,14 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m2(value) => "${value}";
 
-  static String m3(nameOfTheApp) => "Log into your ${nameOfTheApp} account";
+  static String m3(nameOfTheApp) => "${nameOfTheApp} 계정에 로그인하기";
 
-  static String m4(gender) =>
-      "Log in ${Intl.gender(gender, female: 'madam', male: 'sir', other: 'mate')}";
+  static String m4(gender) => "Log in";
 
   static String m5(videoCount) =>
-      "Create a profile, follow other accounts, make your own ${Intl.plural(videoCount, zero: 'no videos', one: 'video', other: 'videos')}, and more.";
+      "Create a profile, follow other accounts, make your own videos, and more.";
 
-  static String m6(nameOfTheApp, when) => "Sign up for ${nameOfTheApp} ${when}";
+  static String m6(nameOfTheApp, when) => "${nameOfTheApp} 가입하기 ${when}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
