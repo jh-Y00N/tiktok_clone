@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:tiktok_clone/common/widgets/video_config/video_config.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
@@ -25,6 +27,9 @@ class _VideoPostState extends State<VideoPost>
     with SingleTickerProviderStateMixin {
   bool _isPaused = false;
   bool _isDescriptionExpanded = false;
+  // using InheritedWidget + StatefulWidget
+  // bool _autoMute = videoConfig.autoMute;
+  // bool _autoMute = videoConfig.value;
   final _animationDuration = Duration(milliseconds: 200);
   late final AnimationController _animationController;
   final description =
@@ -109,6 +114,15 @@ class _VideoPostState extends State<VideoPost>
       value: 1.5,
       duration: _animationDuration,
     );
+
+    // videoConfig.addListener(
+    //   () {
+    //     setState(() {
+    //       // _autoMute = videoConfig.autoMute; // using InheritedWidget + StatefulWidget
+    //       _autoMute = videoConfig.value; // using ChangeNotifier or ValueNotifier
+    //     });
+    //   },
+    // );
   }
 
   @override
@@ -120,6 +134,8 @@ class _VideoPostState extends State<VideoPost>
 
   @override
   Widget build(BuildContext context) {
+    // final videoConfig =
+    //     context.dependOnInheritedWidgetOfExactType<VideoConfig>();
     return VisibilityDetector(
       onVisibilityChanged: _onVisibilityChanged,
       key: Key("${widget.index}"),
@@ -166,6 +182,26 @@ class _VideoPostState extends State<VideoPost>
                   ),
                 ),
               ),
+            ),
+          ),
+          Positioned(
+            top: 40,
+            left: 20,
+            child: IconButton(
+              icon: FaIcon(
+                // VideoConfigData.of(context).autoMute // using InheritedWidget + StatefulWidget
+                // _autoMute
+                context.watch<VideoConfig>().isMuted
+                    ? FontAwesomeIcons.volumeOff
+                    : FontAwesomeIcons.volumeHigh,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                // VideoConfigData.of(context).toggleMute();
+                // videoConfig.toggleMute();  // using InheritedWidget + StatefulWidget
+                // videoConfig.value = !videoConfig.value;  // using ChangeNotifier or ValueNotifier
+                context.read<VideoConfig>().toggleMute(); // using Provider
+              },
             ),
           ),
           Positioned(

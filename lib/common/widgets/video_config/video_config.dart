@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// using InheritedWidget
 // class VideoConfigData extends InheritedWidget {
 //   const VideoConfigData({
 //     super.key,
@@ -21,6 +22,7 @@ import 'package:flutter/material.dart';
 //   }
 // }
 
+// using StatefulWidget to access and modify InheritedWidget
 // class VideoConfig extends StatefulWidget {
 //   const VideoConfig({super.key, required this.child});
 
@@ -64,6 +66,7 @@ import 'package:flutter/material.dart';
 // // for one value
 // final videoConfig = ValueNotifier(false);
 
+// using Provider
 class VideoConfig extends ChangeNotifier {
   bool isMuted = false;
   bool isAutoplay = false;

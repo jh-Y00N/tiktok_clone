@@ -10,22 +10,10 @@ class InboxScreen extends StatelessWidget {
 
   void _onDmPressed(BuildContext context) {
     context.pushNamed(ChatsScreen.routeName);
-
-    // Navigator.of(context).push(
-    //   MaterialPageRoute(
-    //     builder: (context) => ChatsScreen(),
-    //   ),
-    // );
   }
 
   void _onActivityTap(BuildContext context) {
     context.pushNamed(ActivityScreen.routeName);
-
-    // Navigator.of(context).push(
-    //   MaterialPageRoute(
-    //     builder: (context) => ActivityScreen(),
-    //   ),
-    // );
   }
 
   @override

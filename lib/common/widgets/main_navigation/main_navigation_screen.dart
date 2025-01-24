@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tiktok_clone/common/widgets/main_navigation/main_config.dart';
+import 'package:tiktok_clone/common/widgets/main_navigation/appearance_config.dart';
 import 'package:tiktok_clone/common/widgets/main_navigation/widgets/nav_tab.dart';
 import 'package:tiktok_clone/common/widgets/main_navigation/widgets/post_video_button.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
@@ -36,16 +36,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   void _onPostVideoButtonTap() {
     context.pushNamed(VideoRecordingScreen.routeName);
-    // Navigator.of(context).push(
-    //   MaterialPageRoute(
-    //     builder: (context) => Scaffold(
-    //       appBar: AppBar(
-    //         title: Text('Record video'),
-    //       ),
-    //     ),
-    //     fullscreenDialog: true,
-    //   ),
-    // );
   }
 
   @override

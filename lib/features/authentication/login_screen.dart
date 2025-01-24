@@ -16,7 +16,6 @@ class LoginScreen extends StatelessWidget {
 
   void _onSignUpTap(BuildContext context) {
     context.goNamed(SignUpScreen.routeName);
-    // Navigator.of(context).pop();
   }
 
   void _onEmailLoginTap(BuildContext context) {

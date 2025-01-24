@@ -42,12 +42,6 @@ class _ChatsScreenState extends State<ChatsScreen> {
       ChatDetailScreen.routeName,
       pathParameters: {"chatId": "$index"},
     );
-
-    // Navigator.of(context).push(
-    //   MaterialPageRoute(
-    //     builder: (context) => ChatDetailScreen(chatId: "$index"),
-    //   ),
-    // );
   }
 
   ListTile _makeTile(int index) {
