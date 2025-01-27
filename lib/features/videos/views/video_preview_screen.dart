@@ -1,12 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tiktok_clone/features/videos/view_models/timeline_view_model.dart';
 import 'package:video_player/video_player.dart';
 
-class VideoPreviewScreen extends StatefulWidget {
+class VideoPreviewScreen extends ConsumerStatefulWidget {
   const VideoPreviewScreen({
     super.key,
     required this.video,
@@ -17,10 +19,10 @@ class VideoPreviewScreen extends StatefulWidget {
   final bool isPicked;
 
   @override
-  State<VideoPreviewScreen> createState() => _VideoPreviewScreenState();
+  VideoPreviewScreenState createState() => VideoPreviewScreenState();
 }
 
-class _VideoPreviewScreenState extends State<VideoPreviewScreen> {
+class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
   bool _savedVideo = false;
 
   late final VideoPlayerController _videoPlayerController;
@@ -28,9 +30,9 @@ class _VideoPreviewScreenState extends State<VideoPreviewScreen> {
   Future<void> _initVideo() async {
     _videoPlayerController =
         VideoPlayerController.file(File(widget.video.path));
-    await _videoPlayerController.initialize();
-    await _videoPlayerController.setLooping(true);
-    await _videoPlayerController.play();
+    // await _videoPlayerController.initialize();
+    // await _videoPlayerController.setLooping(true);
+    // await _videoPlayerController.play();
     setState(() {});
   }
 
@@ -62,6 +64,10 @@ class _VideoPreviewScreenState extends State<VideoPreviewScreen> {
     setState(() {});
   }
 
+  void _onUploadPressed() {
+    ref.read(timelineProvider.notifier).uploadVideo();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -90,6 +96,14 @@ class _VideoPreviewScreenState extends State<VideoPreviewScreen> {
                     : FontAwesomeIcons.download,
               ),
             ),
+          IconButton(
+            onPressed: ref.watch(timelineProvider).isLoading
+                ? () {}
+                : _onUploadPressed,
+            icon: ref.watch(timelineProvider).isLoading
+                ? CircularProgressIndicator.adaptive()
+                : FaIcon(FontAwesomeIcons.cloudArrowUp),
+          ),
         ],
       ),
       body: _videoPlayerController.value.isInitialized

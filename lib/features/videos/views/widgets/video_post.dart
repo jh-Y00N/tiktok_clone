@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
@@ -11,7 +11,7 @@ import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-class VideoPost extends StatefulWidget {
+class VideoPost extends ConsumerStatefulWidget {
   const VideoPost({
     super.key,
     required this.index,
@@ -20,10 +20,10 @@ class VideoPost extends StatefulWidget {
   final int index;
 
   @override
-  State<VideoPost> createState() => _VideoPostState();
+  VideoPostState createState() => VideoPostState();
 }
 
-class _VideoPostState extends State<VideoPost>
+class VideoPostState extends ConsumerState<VideoPost>
     with SingleTickerProviderStateMixin {
   bool _isPaused = false;
   late bool _isCurrentMuted;
@@ -51,8 +51,9 @@ class _VideoPostState extends State<VideoPost>
     if (info.visibleFraction == 1 &&
         !_videoPlayerController.value.isPlaying &&
         !_isPaused) {
-      final isAutoplay = context.read<PlaybackConfigVm>().isAutoplay;
-      if (isAutoplay) _videoPlayerController.play();
+      if (ref.read(playbackConfigProvider).isAutoplay) {
+        _videoPlayerController.play();
+      }
     }
 
     if (_videoPlayerController.value.isPlaying && info.visibleFraction == 0) {
@@ -67,7 +68,9 @@ class _VideoPostState extends State<VideoPost>
       await _videoPlayerController.setVolume(0);
     }
     setState(() {});
-    final isMuted = context.read<PlaybackConfigVm>().isMuted;
+
+    if (!mounted) return;
+    final isMuted = ref.read(playbackConfigProvider).isMuted;
     _videoPlayerController.setVolume(isMuted ? 0 : 1);
     _videoPlayerController.addListener(_onVideoChange);
   }
@@ -104,7 +107,7 @@ class _VideoPostState extends State<VideoPost>
 
   void _onPlaybackConfigChanged() {
     if (!mounted) return;
-    final isMuted = context.read<PlaybackConfigVm>().isMuted;
+    final isMuted = ref.read(playbackConfigProvider).isMuted;
     if (isMuted) {
       _videoPlayerController.setVolume(0);
     } else {
@@ -126,8 +129,8 @@ class _VideoPostState extends State<VideoPost>
       duration: _animationDuration,
     );
 
-    context.read<PlaybackConfigVm>().addListener(_onPlaybackConfigChanged);
-    _isCurrentMuted = context.read<PlaybackConfigVm>().isMuted;
+    // context.read<PlaybackConfigVm>().addListener(_onPlaybackConfigChanged);
+    _isCurrentMuted = ref.read(playbackConfigProvider).isMuted;
   }
 
   @override
@@ -192,8 +195,7 @@ class _VideoPostState extends State<VideoPost>
             left: 20,
             child: IconButton(
               icon: FaIcon(
-                // context.watch<PlaybackConfigVm>().isMuted
-                _isCurrentMuted
+                ref.watch(playbackConfigProvider).isMuted
                     ? FontAwesomeIcons.volumeOff
                     : FontAwesomeIcons.volumeHigh,
                 color: Colors.white,
@@ -202,10 +204,7 @@ class _VideoPostState extends State<VideoPost>
                 setState(() {
                   _isCurrentMuted = !_isCurrentMuted;
                 });
-                _videoPlayerController.setVolume(_isCurrentMuted ? 0 : 1);
-                // context
-                //     .read<PlaybackConfigVm>()
-                //     .setMuted(!context.read<PlaybackConfigVm>().isMuted);
+                _onPlaybackConfigChanged();
               },
             ),
           ),

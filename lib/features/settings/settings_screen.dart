@@ -1,30 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:tiktok_clone/common/widgets/main_navigation/appearance_config.dart';
 import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends State<SettingsScreen> {
-  bool _notifications = false;
-
-  void _onNotificationChanged(bool? newValue) {
-    if (newValue != null) {
-      setState(() {
-        _notifications = newValue;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Localizations.override(
       locale: Locale("es"),
       context: context,
@@ -84,11 +69,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
             CheckboxListTile(
               checkColor: Colors.white,
               activeColor: Colors.black,
-              value: _notifications,
-              onChanged: _onNotificationChanged,
+              value: false,
+              onChanged: (value) {},
               title: Text("Enable notifications"),
             ),
-            Checkbox(value: _notifications, onChanged: _onNotificationChanged),
+            Checkbox(
+              value: false,
+              onChanged: (value) {},
+            ),
             AnimatedBuilder(
               animation: appearanceConfig,
               builder: (context, child) {
@@ -102,21 +90,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
               },
             ),
             SwitchListTile(
-              value: context.watch<PlaybackConfigVm>().isAutoplay,
-              onChanged: context.read<PlaybackConfigVm>().setAutoplay,
+              value: ref.watch(playbackConfigProvider).isAutoplay,
+              onChanged: (value) => {
+                ref.read(playbackConfigProvider.notifier).setAutoplay(value),
+              },
               title: Text("Autoplay"),
               subtitle: Text("Videos will autoplay by default"),
             ),
             CupertinoSwitch(
-              value: _notifications,
-              onChanged: _onNotificationChanged,
+              value: false,
+              onChanged: (value) {},
             ),
             SwitchListTile.adaptive(
-              value: context
-                  .watch<PlaybackConfigVm>()
-                  .isMuted, // watch changes and rebuild when the value changes
-              onChanged:
-                  context.read<PlaybackConfigVm>().setMuted, // read one time
+              value: ref.watch(playbackConfigProvider).isMuted,
+              onChanged: ref.read(playbackConfigProvider.notifier).setMuted,
               title: Text("Auto mute"),
               subtitle: Text("Videos will be muted by default"),
             ),
