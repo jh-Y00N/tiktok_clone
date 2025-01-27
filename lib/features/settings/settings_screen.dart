@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:tiktok_clone/common/widgets/main_navigation/appearance_config.dart';
-import 'package:tiktok_clone/common/widgets/video_config/video_config.dart';
+import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -101,55 +101,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 );
               },
             ),
-            Switch(value: _notifications, onChanged: _onNotificationChanged),
+            SwitchListTile(
+              value: context.watch<PlaybackConfigVm>().isAutoplay,
+              onChanged: context.read<PlaybackConfigVm>().setAutoplay,
+              title: Text("Autoplay"),
+              subtitle: Text("Videos will autoplay by default"),
+            ),
             CupertinoSwitch(
               value: _notifications,
               onChanged: _onNotificationChanged,
             ),
-            // using InheritedWidget + StatefulWidget
-            // SwitchListTile.adaptive(
-            //   value: VideoConfigData.of(context).autoMute,
-            //   onChanged: (value) {
-            //     VideoConfigData.of(context).toggleMute();
-            //   },
-            //   title: Text("Auto mute"),
-            //   subtitle: Text("Videos will be muted by default"),
-            // ),
-
-            // using ChangeNotifier
-            // AnimatedBuilder(
-            //   animation: videoConfig,
-            //   builder: (context, child) => SwitchListTile.adaptive(
-            //     // value: videoConfig.autoMute,
-            //     value: videoConfig.value,
-            //     onChanged: (value) {
-            //       // videoConfig.toggleMute();
-            //       videoConfig.value = !videoConfig.value;
-            //     },
-            //     title: Text("Auto mute"),
-            //     subtitle: Text("Videos will be muted by default"),
-            //   ),
-            // ),
-
-            // using ValueNotifier
-            // ValueListenableBuilder(
-            //   valueListenable: videoConfig,
-            //   builder: (context, value, child) => SwitchListTile.adaptive(
-            //     value: videoConfig.value,
-            //     onChanged: (value) {
-            //       videoConfig.value = !videoConfig.value;
-            //     },
-            //     title: Text("Auto mute"),
-            //     subtitle: Text("Videos will be muted by default"),
-            //   ),
-            // ),
-
-            // using Provider
             SwitchListTile.adaptive(
-              value: context.watch<VideoConfig>().isMuted,
-              onChanged: (value) {
-                context.read<VideoConfig>().toggleMute();
-              },
+              value: context
+                  .watch<PlaybackConfigVm>()
+                  .isMuted, // watch changes and rebuild when the value changes
+              onChanged:
+                  context.read<PlaybackConfigVm>().setMuted, // read one time
               title: Text("Auto mute"),
               subtitle: Text("Videos will be muted by default"),
             ),
