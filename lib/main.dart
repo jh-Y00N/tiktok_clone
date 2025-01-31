@@ -34,16 +34,16 @@ void main() async {
   );
 }
 
-class TikTokApp extends StatelessWidget {
+class TikTokApp extends ConsumerWidget {
   const TikTokApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ValueListenableBuilder(
       valueListenable: appearanceConfig,
       builder: (context, value, child) {
         return MaterialApp.router(
-          routerConfig: router,
+          routerConfig: ref.watch(routerProvider),
           debugShowCheckedModeBanner: false,
           themeMode: appearanceConfig.value ? ThemeMode.dark : ThemeMode.light,
           title: 'TikTok Clone',

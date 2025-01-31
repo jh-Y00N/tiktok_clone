@@ -20,7 +20,7 @@ class VideoPost extends ConsumerStatefulWidget {
   final int index;
 
   @override
-  VideoPostState createState() => VideoPostState();
+  ConsumerState createState() => VideoPostState();
 }
 
 class VideoPostState extends ConsumerState<VideoPost>

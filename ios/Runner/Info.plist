@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>LSApplicationCategoryType</key>
-	<string></string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -24,12 +22,31 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>Encoded App ID</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>app-1-19881781652-ios-f287c69840602b5e748781</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
 			<key>commondatastorage.googleapis.com</key>
@@ -38,11 +55,15 @@
 				<true/>
 			</dict>
 		</dict>
-		<key>NSAllowsLocalNetworking</key>
-		<true/>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Allow camera usage to take a video</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Allow location access for Exif data</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Allow microphone usage to take a video</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Allow photo library usage to upload or download videos</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -62,13 +83,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSCameraUsageDescription</key>
-	<string>Allow camera usage to take a video</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Allow microphone usage to take a video</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Allow photo library usage to upload or download videos</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Allow location access for Exif data</string>
 </dict>
 </plist>

@@ -7,7 +7,7 @@ class VideoTimelineScreen extends ConsumerStatefulWidget {
   const VideoTimelineScreen({super.key});
 
   @override
-  VideoTimelineScreenState createState() => VideoTimelineScreenState();
+  ConsumerState createState() => VideoTimelineScreenState();
 }
 
 class VideoTimelineScreenState extends ConsumerState<VideoTimelineScreen> {

@@ -19,7 +19,7 @@ class VideoPreviewScreen extends ConsumerStatefulWidget {
   final bool isPicked;
 
   @override
-  VideoPreviewScreenState createState() => VideoPreviewScreenState();
+  ConsumerState createState() => VideoPreviewScreenState();
 }
 
 class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {

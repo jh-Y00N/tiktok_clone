@@ -7,16 +7,6 @@ class PlaybackConfigVm extends Notifier<PlaybackConfigModel> {
 
   final VideoPlaybackConfigRepo _repository;
 
-  void setMuted(bool value) {
-    _repository.setMuted(value);
-    state = PlaybackConfigModel(isMuted: value, isAutoplay: state.isAutoplay);
-  }
-
-  void setAutoplay(bool value) {
-    _repository.setAutoplay(value);
-    state = PlaybackConfigModel(isMuted: state.isMuted, isAutoplay: value);
-  }
-
   @override
   PlaybackConfigModel build() {
     return PlaybackConfigModel(
@@ -24,9 +14,21 @@ class PlaybackConfigVm extends Notifier<PlaybackConfigModel> {
       isAutoplay: _repository.isAutoplay(),
     );
   }
+
+  void setMuted(bool value) {
+    _repository.setMuted(value);
+    // state.isMuted = value; // NOT working; state is not mutable, should be replaced
+    state = PlaybackConfigModel(isMuted: value, isAutoplay: state.isAutoplay);
+  }
+
+  void setAutoplay(bool value) {
+    _repository.setAutoplay(value);
+    state = PlaybackConfigModel(isMuted: state.isMuted, isAutoplay: value);
+  }
 }
 
 final playbackConfigProvider =
     NotifierProvider<PlaybackConfigVm, PlaybackConfigModel>(
+  // NotifierProvider: A complex state object that is immutable except through an interface
   () => throw UnimplementedError(),
 );
