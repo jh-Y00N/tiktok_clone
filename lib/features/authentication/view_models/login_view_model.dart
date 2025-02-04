@@ -8,11 +8,11 @@ import 'package:tiktok_clone/features/onboarding/interests_screen.dart';
 import 'package:tiktok_clone/utils.dart';
 
 class LoginViewModel extends AsyncNotifier<void> {
-  late final AuthenticationRepo _repo;
+  late final AuthenticationRepo _repository;
 
   @override
   FutureOr<void> build() {
-    _repo = ref.read(authRepo);
+    _repository = ref.read(authRepo);
   }
 
   Future<void> signIn(
@@ -21,7 +21,8 @@ class LoginViewModel extends AsyncNotifier<void> {
     String password,
   ) async {
     state = AsyncValue.loading();
-    state = await AsyncValue.guard(() async => _repo.signIn(email, password));
+    state =
+        await AsyncValue.guard(() async => _repository.signIn(email, password));
 
     if (!context.mounted) return;
     if (state.hasError) {

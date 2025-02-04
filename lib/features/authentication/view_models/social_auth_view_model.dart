@@ -7,17 +7,17 @@ import 'package:tiktok_clone/features/authentication/repos/authentication_repo.d
 import 'package:tiktok_clone/utils.dart';
 
 class SocialAuthViewModel extends AsyncNotifier<void> {
-  late final AuthenticationRepo _repo;
+  late final AuthenticationRepo _repository;
 
   @override
   FutureOr<void> build() {
-    _repo = ref.read(authRepo);
+    _repository = ref.read(authRepo);
   }
 
   Future<void> githubSignIn(BuildContext context) async {
     state = AsyncValue.loading();
     state = await AsyncValue.guard(
-      () async => await _repo.githubSignIn(),
+      () async => await _repository.githubSignIn(),
     );
 
     if (!context.mounted) return;
