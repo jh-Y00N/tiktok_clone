@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
-import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_button.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_comments.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
@@ -51,9 +50,9 @@ class VideoPostState extends ConsumerState<VideoPost>
     if (info.visibleFraction == 1 &&
         !_videoPlayerController.value.isPlaying &&
         !_isPaused) {
-      if (ref.read(playbackConfigProvider).isAutoplay) {
-        _videoPlayerController.play();
-      }
+      // if (ref.read(playbackConfigProvider).isAutoplay) {
+      //   _videoPlayerController.play();
+      // }
     }
 
     if (_videoPlayerController.value.isPlaying && info.visibleFraction == 0) {
@@ -70,8 +69,8 @@ class VideoPostState extends ConsumerState<VideoPost>
     setState(() {});
 
     if (!mounted) return;
-    final isMuted = ref.read(playbackConfigProvider).isMuted;
-    _videoPlayerController.setVolume(isMuted ? 0 : 1);
+    // final isMuted = ref.read(playbackConfigProvider).isMuted;
+    // _videoPlayerController.setVolume(isMuted ? 0 : 1);
     _videoPlayerController.addListener(_onVideoChange);
   }
 
@@ -107,12 +106,12 @@ class VideoPostState extends ConsumerState<VideoPost>
 
   void _onPlaybackConfigChanged() {
     if (!mounted) return;
-    final isMuted = ref.read(playbackConfigProvider).isMuted;
-    if (isMuted) {
-      _videoPlayerController.setVolume(0);
-    } else {
-      _videoPlayerController.setVolume(1);
-    }
+    // final isMuted = ref.read(playbackConfigProvider).isMuted;
+    // if (isMuted) {
+    //   _videoPlayerController.setVolume(0);
+    // } else {
+    //   _videoPlayerController.setVolume(1);
+    // }
   }
 
   @override
@@ -130,7 +129,7 @@ class VideoPostState extends ConsumerState<VideoPost>
     );
 
     // context.read<PlaybackConfigVm>().addListener(_onPlaybackConfigChanged);
-    _isCurrentMuted = ref.read(playbackConfigProvider).isMuted;
+    // _isCurrentMuted = ref.read(playbackConfigProvider).isMuted;
   }
 
   @override
@@ -195,7 +194,8 @@ class VideoPostState extends ConsumerState<VideoPost>
             left: 20,
             child: IconButton(
               icon: FaIcon(
-                ref.watch(playbackConfigProvider).isMuted
+                // ref.watch(playbackConfigProvider).isMuted
+                false
                     ? FontAwesomeIcons.volumeOff
                     : FontAwesomeIcons.volumeHigh,
                 color: Colors.white,

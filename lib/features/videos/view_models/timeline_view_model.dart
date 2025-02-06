@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tiktok_clone/features/videos/models/video_model.dart';
 
 class TimelineViewModel extends AsyncNotifier<List<VideoModel>> {
-  List<VideoModel> _list = [];
+  final List<VideoModel> _list = [];
 
   @override
   FutureOr<List<VideoModel>> build() async {
@@ -12,12 +12,14 @@ class TimelineViewModel extends AsyncNotifier<List<VideoModel>> {
     return _list;
   }
 
-  void uploadVideo() async {
+  void uploadVideo(
+    String? title,
+  ) async {
     state = AsyncValue.loading();
     await Future.delayed(Duration(seconds: 2));
 
-    final newVideo = VideoModel(title: "${DateTime.now()}");
-    _list = [..._list, newVideo];
+    // final newVideo = VideoModel(title: "${DateTime.now()}", creatorUid: creatorUid, description: description, fileUrl: fileUrl, thumbnailUrl: thumbnailUrl, likes: likes, comments: comments, createdAt: createdAt);
+    // _list = [..._list, newVideo];
     state = AsyncValue.data(_list);
   }
 }

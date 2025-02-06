@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gallery_saver/gallery_saver.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tiktok_clone/features/videos/view_models/timeline_view_model.dart';
+import 'package:tiktok_clone/constants/gaps.dart';
+import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/view_models/upload_video_view_model.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPreviewScreen extends ConsumerStatefulWidget {
@@ -24,6 +27,8 @@ class VideoPreviewScreen extends ConsumerStatefulWidget {
 
 class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
   bool _savedVideo = false;
+  String? title;
+  String? description;
 
   late final VideoPlayerController _videoPlayerController;
 
@@ -65,7 +70,84 @@ class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
   }
 
   void _onUploadPressed() {
-    ref.read(timelineProvider.notifier).uploadVideo();
+    showModalBottomSheet(
+      context: context,
+      showDragHandle: true,
+      builder: (context) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              onChanged: (value) => title = value,
+              decoration: InputDecoration(
+                hintText: 'title',
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.grey.shade400,
+                  ),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.grey.shade400,
+                  ),
+                ),
+              ),
+            ),
+            Gaps.v16,
+            TextField(
+              onChanged: (value) => description = value,
+              decoration: InputDecoration(
+                hintText: 'description',
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.grey.shade400,
+                  ),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.grey.shade400,
+                  ),
+                ),
+              ),
+            ),
+            Gaps.v28,
+            GestureDetector(
+              onTap: ref.read(uploadVideoProvider).isLoading
+                  ? null
+                  : () {
+                      ref.read(uploadVideoProvider.notifier).uploadVideo(
+                            File(widget.video.path),
+                            title,
+                            description,
+                            context,
+                          );
+                      context.pop();
+                      context.pop();
+                    },
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(
+                  vertical: Sizes.size16,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(Sizes.size5),
+                  color: Theme.of(context).primaryColor,
+                ),
+                child: Text(
+                  "Upload",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -97,10 +179,10 @@ class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
               ),
             ),
           IconButton(
-            onPressed: ref.watch(timelineProvider).isLoading
+            onPressed: ref.watch(uploadVideoProvider).isLoading
                 ? () {}
                 : _onUploadPressed,
-            icon: ref.watch(timelineProvider).isLoading
+            icon: ref.watch(uploadVideoProvider).isLoading
                 ? CircularProgressIndicator.adaptive()
                 : FaIcon(FontAwesomeIcons.cloudArrowUp),
           ),

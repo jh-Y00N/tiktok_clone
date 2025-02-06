@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/common/widgets/main_navigation/appearance_config.dart';
 import 'package:tiktok_clone/features/authentication/repos/authentication_repo.dart';
 import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
-import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -93,9 +92,10 @@ class SettingsScreen extends ConsumerWidget {
               },
             ),
             SwitchListTile(
-              value: ref.watch(playbackConfigProvider).isAutoplay,
+              value: false,
+              // value: ref.watch(playbackConfigProvider).isAutoplay,
               onChanged: (value) => {
-                ref.read(playbackConfigProvider.notifier).setAutoplay(value),
+                // ref.read(playbackConfigProvider.notifier).setAutoplay(value),
               },
               title: Text("Autoplay"),
               subtitle: Text("Videos will autoplay by default"),
@@ -105,8 +105,10 @@ class SettingsScreen extends ConsumerWidget {
               onChanged: (value) {},
             ),
             SwitchListTile.adaptive(
-              value: ref.watch(playbackConfigProvider).isMuted,
-              onChanged: ref.read(playbackConfigProvider.notifier).setMuted,
+              value: false,
+              onChanged: (value) {},
+              // value: ref.watch(playbackConfigProvider).isMuted,
+              // onChanged: ref.read(playbackConfigProvider.notifier).setMuted,
               title: Text("Auto mute"),
               subtitle: Text("Videos will be muted by default"),
             ),
