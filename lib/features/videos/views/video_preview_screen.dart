@@ -35,9 +35,9 @@ class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
   Future<void> _initVideo() async {
     _videoPlayerController =
         VideoPlayerController.file(File(widget.video.path));
-    // await _videoPlayerController.initialize();
-    // await _videoPlayerController.setLooping(true);
-    // await _videoPlayerController.play();
+    await _videoPlayerController.initialize();
+    await _videoPlayerController.setLooping(true);
+    await _videoPlayerController.play();
     setState(() {});
   }
 
@@ -122,8 +122,11 @@ class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
                             description,
                             context,
                           );
-                      context.pop();
-                      context.pop();
+
+                      if (!ref.read(uploadVideoProvider).isLoading) {
+                        context.pop();
+                        context.go("/home");
+                      }
                     },
               child: Container(
                 width: double.infinity,
@@ -134,14 +137,18 @@ class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
                   borderRadius: BorderRadius.circular(Sizes.size5),
                   color: Theme.of(context).primaryColor,
                 ),
-                child: Text(
-                  "Upload",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+                child: ref.watch(uploadVideoProvider).isLoading
+                    ? Text(
+                        "Upload",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      )
+                    : CircularProgressIndicator.adaptive(
+                        backgroundColor: Colors.white,
+                      ),
               ),
             ),
           ],

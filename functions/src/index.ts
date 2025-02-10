@@ -33,3 +33,24 @@ export const onVideoCreated = functions.firestore.onDocumentCreated("/videos/{vi
         "videoId": snapshot.id
     });
 });
+
+export const onLikeCreated = functions.firestore.onDocumentCreated("likes/{likeId}", async (event) => {
+    const snapshot = event.data;
+    const db = admin.firestore();
+    if (snapshot == null) return;
+
+    const [videoId, userId] = snapshot.id.split("-000-");
+    await db.collection("videos").doc(videoId).update({ "likes": admin.firestore.FieldValue.increment(1) });
+    await db.collection("users").doc(userId).collection("likedVideos").doc(videoId).set({ "videoId": videoId });
+    console.log(`Liked video added for userId: ${userId}, videoId: ${videoId}`);
+});
+
+export const onLikeRemoved = functions.firestore.onDocumentDeleted("likes/{likeId}", async (event) => {
+    const snapshot = event.data;
+    const db = admin.firestore();
+    if (snapshot == null) return;
+
+    const [videoId, userId] = snapshot.id.split("-000-");
+    await db.collection("videos").doc(videoId).update({ "likes": admin.firestore.FieldValue.increment(-1) });
+    await db.collection("users").doc(userId).collection("likedVideos").doc(videoId).delete();
+});

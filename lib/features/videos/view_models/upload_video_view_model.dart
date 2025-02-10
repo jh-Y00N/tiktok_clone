@@ -31,13 +31,23 @@ class UploadVideoViewModel extends AsyncNotifier<void> {
       state = await AsyncValue.guard(() async {
         final task = await _repository.uploadVideoFile(video, user!.uid);
         if (task.metadata != null) {
+          final fullUrl = await task.ref.getDownloadURL();
+          final id = fullUrl
+              .split("?")
+              .first
+              .split("/")
+              .last
+              .split("%")
+              .last
+              .replaceFirst("2F", "");
           await _repository.saveVideo(
             VideoModel(
+              id: id,
               creatorUid: user.uid,
               creator: userProfile.name,
               title: title ?? "",
               description: description ?? "",
-              fileUrl: await task.ref.getDownloadURL(),
+              fileUrl: fullUrl,
               thumbnailUrl: "",
               likes: 0,
               comments: 0,
