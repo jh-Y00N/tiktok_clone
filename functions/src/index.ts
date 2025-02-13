@@ -42,7 +42,6 @@ export const onLikeCreated = functions.firestore.onDocumentCreated("likes/{likeI
     const [videoId, userId] = snapshot.id.split("-000-");
     await db.collection("videos").doc(videoId).update({ "likes": admin.firestore.FieldValue.increment(1) });
     await db.collection("users").doc(userId).collection("likedVideos").doc(videoId).set({ "videoId": videoId });
-    console.log(`Liked video added for userId: ${userId}, videoId: ${videoId}`);
 });
 
 export const onLikeRemoved = functions.firestore.onDocumentDeleted("likes/{likeId}", async (event) => {
@@ -53,4 +52,10 @@ export const onLikeRemoved = functions.firestore.onDocumentDeleted("likes/{likeI
     const [videoId, userId] = snapshot.id.split("-000-");
     await db.collection("videos").doc(videoId).update({ "likes": admin.firestore.FieldValue.increment(-1) });
     await db.collection("users").doc(userId).collection("likedVideos").doc(videoId).delete();
+});
+
+export const onChatCreated = functions.firestore.onDocumentCreated("chat_rooms/{chatId}/texts/{textId}", async (event) => {
+    const params = event.params;
+    const db = admin.firestore();
+    await db.collection("chat_rooms").doc(params.chatId).collection("texts").doc(params.textId).update({ "id": params.textId });
 });
