@@ -1,30 +1,112 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:tiktok_clone/main.dart';
+import 'package:tiktok_clone/common/widgets/main_navigation/appearance_config.dart';
+import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const TikTokApp());
+  group(
+    "Form button test",
+    () {
+      testWidgets(
+        "enabled state",
+        (widgetTester) async {
+          await widgetTester.pumpWidget(
+            Theme(
+              data: ThemeData(primaryColor: Colors.red),
+              child: Directionality(
+                textDirection: TextDirection.ltr,
+                child: FormButton(disabled: false),
+              ),
+            ),
+          );
+          expect(find.text("Next"), findsOneWidget);
+          expect(
+            widgetTester
+                .firstWidget<AnimatedDefaultTextStyle>(
+                  find.byType(AnimatedDefaultTextStyle),
+                )
+                .style
+                .color,
+            Colors.white,
+          );
+          expect(
+            (widgetTester
+                    .firstWidget<AnimatedContainer>(
+                      find.byType(AnimatedContainer),
+                    )
+                    .decoration as BoxDecoration)
+                .color,
+            Colors.red,
+          );
+        },
+      );
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+      testWidgets(
+        "disabled state",
+        (widgetTester) async {
+          await widgetTester.pumpWidget(
+            Directionality(
+              textDirection: TextDirection.ltr,
+              child: FormButton(disabled: true),
+            ),
+          );
+          expect(find.text("Next"), findsOneWidget);
+          expect(
+            widgetTester
+                .firstWidget<AnimatedDefaultTextStyle>(
+                  find.byType(AnimatedDefaultTextStyle),
+                )
+                .style
+                .color,
+            Colors.grey.shade400,
+          );
+        },
+      );
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+      testWidgets(
+        "disabled state in dark mode",
+        (widgetTester) async {
+          appearanceConfig.value = !appearanceConfig.value;
+          await widgetTester.pumpWidget(
+            Directionality(
+              textDirection: TextDirection.ltr,
+              child: FormButton(disabled: true),
+            ),
+          );
+          expect(find.text("Next"), findsOneWidget);
+          expect(
+            (widgetTester
+                    .firstWidget<AnimatedContainer>(
+                      find.byType(AnimatedContainer),
+                    )
+                    .decoration as BoxDecoration)
+                .color,
+            Colors.grey.shade800,
+          );
+        },
+      );
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
-  });
+      testWidgets(
+        "disabled state in light mode",
+        (widgetTester) async {
+          await widgetTester.pumpWidget(
+            Directionality(
+              textDirection: TextDirection.ltr,
+              child: FormButton(disabled: true),
+            ),
+          );
+          expect(find.text("Next"), findsOneWidget);
+          expect(
+            (widgetTester
+                    .firstWidget<AnimatedContainer>(
+                      find.byType(AnimatedContainer),
+                    )
+                    .decoration as BoxDecoration)
+                .color,
+            Colors.grey.shade300,
+          );
+        },
+      );
+    },
+  );
 }
